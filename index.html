@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joyce Berdkan — Engineering Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEAE1;
+    --paper-2:#F5F3EC;
+    --ink:#1A1916;
+    --ink-soft:#46443D;
+    --muted:#807E73;
+    --line:#CDC9BB;
+    --line-strong:#1A1916;
+    --accent:#243A8C;
+    --accent-soft:rgba(36,58,140,0.07);
+    --grid:rgba(26,25,22,0.045);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:30px 30px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 40px;}
+
+  /* ---- top bar ---- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    background:rgba(237,234,225,0.85);
+    backdrop-filter:blur(6px);
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar .wrap{
+    display:flex;justify-content:space-between;align-items:center;
+    height:54px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+  }
+  .topbar .mark{font-weight:500;}
+  .topbar .meta{color:var(--muted);}
+
+  /* ---- hero ---- */
+  .hero{padding:88px 0 56px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent);
+    display:flex;align-items:center;gap:14px;
+    margin-bottom:30px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--line);}
+  .hero h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(3rem,8.5vw,6.2rem);
+    line-height:0.98;
+    letter-spacing:-0.02em;
+    margin-bottom:26px;
+  }
+  .hero h1 em{font-style:italic;font-weight:400;color:var(--accent);}
+  .hero .lede{
+    font-size:1.18rem;
+    max-width:46ch;
+    color:var(--ink-soft);
+    margin-bottom:34px;
+  }
+  .contact{
+    display:flex;flex-wrap:wrap;gap:0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    border-top:1px solid var(--line);
+  }
+  .contact a,.contact span{
+    padding:14px 22px 14px 0;
+    margin-right:22px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-bottom:2px solid transparent;
+    transition:color .2s,border-color .2s;
+  }
+  .contact a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .contact .label{color:var(--muted);}
+
+  /* ---- filter bar ---- */
+  .filterbar{
+    position:sticky;top:54px;z-index:40;
+    background:var(--paper);
+    border-top:1px solid var(--line-strong);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .filterbar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+  .filterbar .ftitle{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--muted);margin-right:14px;
+  }
+  .fbtn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.04em;
+    background:none;border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:7px 14px;cursor:pointer;
+    transition:all .18s ease;
+  }
+  .fbtn .ct{color:var(--muted);margin-left:6px;}
+  .fbtn:hover{border-color:var(--ink);color:var(--ink);}
+  .fbtn.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+  .fbtn.active .ct{color:rgba(237,234,225,0.6);}
+
+  /* ---- projects ---- */
+  .projects{padding:20px 0 40px;}
+  .project{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:34px;
+    padding:46px 0;
+    border-bottom:1px solid var(--line);
+    opacity:0;
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .project:last-child{border-bottom:1px solid var(--line-strong);}
+  @keyframes rise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+  .project.hidden{display:none;}
+
+  .p-index{position:relative;}
+  .p-num{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:3.4rem;line-height:1;
+    color:#BEBAAC;
+    transition:color .25s ease;
+  }
+  .p-cat{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:0.13em;text-transform:uppercase;
+    color:var(--muted);
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1px solid var(--line);
+    display:block;
+  }
+  .project:hover .p-num{color:var(--accent);}
+
+  .p-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:1.72rem;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    margin-bottom:10px;
+  }
+  .p-meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .p-desc{
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin-bottom:18px;
+  }
+  .p-highlights{list-style:none;max-width:62ch;margin-bottom:22px;}
+  .p-highlights li{
+    position:relative;
+    padding-left:24px;
+    margin-bottom:7px;
+    font-size:0.97rem;
+    color:var(--ink-soft);
+  }
+  .p-highlights li::before{
+    content:"+";
+    position:absolute;left:0;top:0;
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--accent);font-weight:500;
+  }
+  .p-specs{
+    border-top:1px solid var(--line);
+    padding-top:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;
+  }
+  .p-specs .skey{
+    color:var(--accent);
+    letter-spacing:0.1em;
+    margin-right:8px;
+  }
+  .p-specs .dot{color:var(--line-strong);opacity:.4;}
+
+  /* featured (thesis) */
+  .project.featured{
+    background:var(--accent-soft);
+    margin:0 -40px;
+    padding-left:40px;padding-right:40px;
+  }
+  .flag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+    background:var(--accent);color:var(--paper-2);
+    padding:3px 9px;margin-bottom:14px;
+  }
+
+  /* ---- footer ---- */
+  footer{padding:60px 0 80px;}
+  footer .fhead{
+    font-family:'Fraunces',serif;
+    font-style:italic;font-weight:400;
+    font-size:1.5rem;
+    margin-bottom:24px;
+  }
+  footer .fcontact{
+    display:flex;flex-wrap:wrap;gap:28px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    padding-top:20px;border-top:1px solid var(--line-strong);
+  }
+  footer .fcontact a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--line);}
+  footer .fcontact a:hover{color:var(--accent);border-color:var(--accent);}
+  footer .fnote{
+    margin-top:20px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--muted);letter-spacing:0.04em;
+  }
+
+  .empty{
+    display:none;
+    padding:60px 0;text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--muted);font-size:13px;
+  }
+
+  /* ---- media gallery ---- */
+  .p-media{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(146px,1fr));
+    gap:12px;
+    max-width:624px;
+    margin:2px 0 22px;
+  }
+  .m-tile{
+    display:block;text-align:left;
+    border:none;background:none;padding:0;font:inherit;
+    cursor:zoom-in;
+  }
+  .m-tile.is-video{cursor:default;}
+  .m-box{
+    aspect-ratio:4/3;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    position:relative;overflow:hidden;
+    transition:border-color .18s ease;
+  }
+  .m-box img,.m-box video{width:100%;height:100%;object-fit:cover;display:block;}
+  .m-tile:hover .m-box{border-color:var(--accent);}
+  .m-ph{
+    display:none;
+    position:absolute;inset:0;
+    flex-direction:column;align-items:center;justify-content:center;gap:9px;
+    border:1px dashed var(--line-strong);
+    color:var(--muted);
+  }
+  .m-box.is-missing .m-ph{display:flex;}
+  .m-box.is-missing img,.m-box.is-missing video{display:none;}
+  .m-ph svg{width:24px;height:24px;stroke:var(--line-strong);fill:none;}
+  .m-ph .ph-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  }
+  .m-cap{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;color:var(--muted);
+    margin-top:7px;line-height:1.45;
+  }
+
+  /* ---- documents / papers ---- */
+  .p-docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .doc-link{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink);text-decoration:none;
+    border:1px solid var(--line-strong);
+    background:var(--paper-2);
+    padding:9px 14px;
+    transition:background .18s ease,color .18s ease;
+  }
+  .doc-link svg{width:14px;height:14px;stroke:var(--accent);fill:none;flex:none;transition:stroke .18s ease;}
+  .doc-link .arrow{color:var(--muted);transition:color .18s ease;}
+  .doc-link:hover{background:var(--ink);color:var(--paper-2);}
+  .doc-link:hover svg{stroke:var(--paper-2);}
+  .doc-link:hover .arrow{color:var(--paper-2);}
+
+  /* ---- inline code viewer ---- */
+  .code-viewer{
+    margin-top:18px;
+    border:1px solid var(--line-strong);
+    background:var(--paper-2);
+  }
+  .cv-bar{
+    display:flex;align-items:stretch;
+    border-bottom:1px solid var(--line);
+    background:var(--paper);
+    overflow-x:auto;
+  }
+  .cv-tab{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--muted);background:none;border:none;
+    border-right:1px solid var(--line);
+    padding:9px 14px;cursor:pointer;white-space:nowrap;
+    transition:color .15s ease,background .15s ease;
+  }
+  .cv-tab:hover{color:var(--ink);}
+  .cv-tab.active{
+    color:var(--accent);background:var(--paper-2);
+    box-shadow:inset 0 -2px 0 var(--accent);
+  }
+  .cv-meta{
+    margin-left:auto;display:flex;align-items:center;
+    padding:0 14px;border-left:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);white-space:nowrap;
+  }
+  .cv-body{display:flex;max-height:360px;overflow:auto;}
+  .cv-nums{
+    flex:none;text-align:right;margin:0;
+    padding:14px 10px 14px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;line-height:1.65;
+    color:var(--line);background:var(--paper);
+    border-right:1px solid var(--line);
+    user-select:none;
+  }
+  .cv-pre{
+    margin:0;padding:14px 16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;line-height:1.65;
+    color:var(--ink-soft);white-space:pre;
+  }
+  .cv-pre .c-com{color:var(--muted);font-style:italic;}
+  .cv-pre .c-kw{color:var(--accent);font-weight:600;}
+  .cv-pre .c-num{color:#9A4A2F;}
+  .cv-pre .c-str{color:#3F6B3A;}
+  .cv-pre .c-dir{color:#7A4E8C;}
+
+  /* ---- lightbox ---- */
+  .lightbox{
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(20,19,16,0.93);
+    align-items:center;justify-content:center;
+    padding:6vw;cursor:zoom-out;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%;max-height:86vh;border:1px solid rgba(237,234,225,0.18);}
+  .lb-close{
+    position:absolute;top:22px;right:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;
+    color:rgba(237,234,225,0.75);background:none;
+    border:1px solid rgba(237,234,225,0.3);
+    padding:8px 13px;cursor:pointer;
+  }
+  .lb-cap{
+    position:absolute;bottom:26px;left:0;right:0;text-align:center;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    color:rgba(237,234,225,0.7);
+  }
+
+  /* ---- research experience ---- */
+  .research{padding:34px 0 10px;}
+  .sec-head{margin-bottom:6px;}
+  .sec-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent);
+    display:flex;align-items:center;gap:14px;
+  }
+  .sec-eyebrow::after{content:"";flex:1;height:1px;background:var(--line);}
+  .sec-title{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(2rem,4.5vw,2.7rem);
+    letter-spacing:-0.015em;margin-top:14px;
+  }
+  .rx{
+    display:grid;grid-template-columns:190px 1fr;gap:34px;
+    padding:32px 0;
+    border-bottom:1px solid var(--line);
+    opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .rx:first-of-type{border-top:1px solid var(--line);margin-top:18px;}
+  .rx:last-child{border-bottom:1px solid var(--line-strong);}
+  .rx-date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;color:var(--accent);padding-top:4px;
+  }
+  .rx-role{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:1.4rem;line-height:1.22;margin-bottom:9px;
+  }
+  .rx-meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;color:var(--muted);
+    line-height:1.65;margin-bottom:14px;
+  }
+  .rx-desc{color:var(--ink-soft);max-width:60ch;margin-bottom:14px;}
+
+  @media(max-width:720px){
+    .wrap{padding:0 24px;}
+    .rx{grid-template-columns:1fr;gap:10px;}
+    .project{grid-template-columns:1fr;gap:14px;padding:36px 0;}
+    .project.featured{margin:0 -24px;padding-left:24px;padding-right:24px;}
+    .p-index{display:flex;align-items:baseline;gap:16px;}
+    .p-num{font-size:2.4rem;}
+    .p-cat{margin-top:0;padding-top:0;border-top:none;}
+    .hero{padding:60px 0 44px;}
+    .filterbar .ftitle{width:100%;margin-bottom:6px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="mark">J. Berdkan</span>
+    <span class="meta">Engineering Index / 2026</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Selected Work &mdash; 2023 to 2026</div>
+    <h1>Joyce Berdkan<br><em>hardware engineering</em></h1>
+    <p class="lede">MS student in Electrical &amp; Computer Engineering at George Washington University, focused on digital VLSI, RF/DSP systems, and embedded hardware. The index below spans the RTL-to-silicon flow, real-time embedded systems, and analog circuit design.</p>
+    <div class="contact">
+      <span><span class="label">LOC</span>&nbsp;&nbsp;Arlington, VA</span>
+      <a href="mailto:joyceberdkan@hotmail.com"><span class="label">EML</span>&nbsp;&nbsp;joyceberdkan@hotmail.com</a>
+      <a href="https://www.linkedin.com/in/joyce-berdkan/" target="_blank" rel="noopener"><span class="label">LNK</span>&nbsp;&nbsp;linkedin.com/in/joyce-berdkan</a>
+    </div>
+  </div>
+</header>
+
+<nav class="filterbar">
+  <div class="wrap">
+    <span class="ftitle">Filter</span>
+    <button class="fbtn active" data-filter="all">All<span class="ct">09</span></button>
+    <button class="fbtn" data-filter="research">Research<span class="ct">01</span></button>
+    <button class="fbtn" data-filter="vlsi">Digital &amp; VLSI<span class="ct">03</span></button>
+    <button class="fbtn" data-filter="embedded">Embedded Systems<span class="ct">03</span></button>
+    <button class="fbtn" data-filter="electronics">Electronics &amp; RF<span class="ct">02</span></button>
+  </div>
+</nav>
+
+<main class="projects">
+  <div class="wrap" id="list">
+
+    <article class="project featured" data-category="research">
+      <div class="p-index">
+        <span class="p-num">01</span>
+        <span class="p-cat">Research</span>
+      </div>
+      <div class="p-body">
+        <span class="flag">Master&#39;s Thesis &middot; In Progress</span>
+        <h2 class="p-title">Compute-in-Memory Ising Machine</h2>
+        <div class="p-meta">George Washington University &middot; MS Thesis &middot; 2026&ndash;2027</div>
+        <p class="p-desc">Developing a compute-in-memory Ising machine &mdash; a hardware accelerator that solves hard combinatorial optimization problems by relaxing a network of coupled spins toward a minimum-energy state, with the computation carried out inside the memory array itself. The thesis spans both the hardware architecture and a simulation framework for evaluating it.</p>
+        <ul class="p-highlights">
+          <li>Designing a compute-in-memory architecture that performs Ising-model spin updates within the memory array, avoiding the processor&ndash;memory data-movement bottleneck.</li>
+          <li>Building a simulation framework to model the machine&#39;s dynamics and evaluate convergence on optimization problems.</li>
+          <li>Situates Ising-machine hardware within quantum-inspired computing &mdash; classical accelerators aimed at the optimization problems quantum computers also target.</li>
+        </ul>
+        <div class="p-specs"><span class="skey">TOPICS</span>compute-in-memory<span class="dot">/</span>Ising model<span class="dot">/</span>combinatorial optimization<span class="dot">/</span>hardware simulation</div>
+      </div>
+    </article>
+
+    <article class="project" data-category="vlsi">
+      <div class="p-index">
+        <span class="p-num">02</span>
+        <span class="p-cat">Digital &amp; VLSI</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">Tiny MIPS CPU &mdash; Full ASIC Design Flow</h2>
+        <div class="p-meta">George Washington University &middot; ASIC Design &middot; Spring 2026</div>
+        <p class="p-desc">A multi-cycle Tiny MIPS processor carried through the complete front-to-back ASIC flow, from RTL to a routed, pad-framed chip. The design executes a ten-instruction subset via a 13-state finite-state-machine controller over a shared 8-bit datapath.</p>
+        <ul class="p-highlights">
+          <li>Completed the full back end: synthesis, DFT scan-chain insertion, ATPG, place-and-route, and pad-frame integration.</li>
+          <li>Reached 99.49% stuck-at and 98.09% transition-delay fault coverage with Synopsys TetraMAX.</li>
+          <li>Closed timing at 25 MHz with zero violating paths across all 439 timed endpoints.</li>
+        </ul>
+        <div class="p-specs"><span class="skey">STACK</span>Verilog<span class="dot">/</span>Synopsys DC + TetraMAX<span class="dot">/</span>Cadence Innovus<span class="dot">/</span>OSU 0.5 &micro;m<span class="dot">/</span>0.825 mm&sup2;</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/tiny-mips-asic-report.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            ASIC Design Technical Report <span class="arrow">&rarr; PDF</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-category="vlsi">
+      <div class="p-index">
+        <span class="p-num">03</span>
+        <span class="p-cat">Digital &amp; VLSI</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">64-QAM Digital Modulator with SPI &amp; CDC FIFO</h2>
+        <div class="p-meta">George Washington University &middot; High-Level VLSI Design &middot; Spring 2026</div>
+        <p class="p-desc">A 64-QAM digital modulator in Verilog integrating a symbol mapper, an SPI configuration interface, and a synchronous-FIFO clock-domain-crossing bridge with three-domain reset sequencing, verified through SDF-annotated, timing-accurate gate-level simulation.</p>
+        <ul class="p-highlights">
+          <li>Synthesized on the IBM CMOS8HP standard-cell library, meeting timing at roughly 130 MHz.</li>
+          <li>Diagnosed and resolved gate-level X-propagation by reworking negedge logic to posedge with active-high signals.</li>
+          <li>Debugged SPI task timing, testbench capture windows, and SDF annotation scoping in Cadence Xcelium.</li>
+        </ul>
+        <div class="p-specs"><span class="skey">STACK</span>Verilog<span class="dot">/</span>IBM CMOS8HP<span class="dot">/</span>Cadence Xcelium<span class="dot">/</span>SPI<span class="dot">/</span>clock-domain crossing</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/64qam-design-report.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Design &amp; Verification Report <span class="arrow">&rarr; PDF</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-category="embedded">
+      <div class="p-index">
+        <span class="p-num">04</span>
+        <span class="p-cat">Embedded Systems</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">FPGA PID Temperature Control System</h2>
+        <div class="p-meta">Liberty University &middot; Advanced Embedded Systems &middot; Spring 2025</div>
+        <p class="p-desc">A hardware-accelerated PID controller in Verilog that regulates on-chip temperature on the DE1-SoC board, built as a custom Avalon-bus IP core and integrated into a Platform Designer SoC alongside ADC and PWM cores.</p>
+        <ul class="p-highlights">
+          <li>Designed a custom PID IP core wrapped in an Avalon bus interface.</li>
+          <li>Wrote HPS-side C software to interface the accelerator and manage the control loop.</li>
+          <li>Closed-loop regulation of a DC fan against a temperature sensor.</li>
+        </ul>
+        <div class="p-media">
+          <figure class="m-tile is-video" data-cap="FPGA PID control system demonstration">
+            <div class="m-box">
+              <video src="media/fpga-pid-demo.mp4" controls preload="metadata"
+                     onerror="this.closest('.m-box').classList.add('is-missing')"></video>
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+                <span class="ph-tag">Video</span>
+              </div>
+            </div>
+            <figcaption class="m-cap">System demonstration</figcaption>
+          </figure>
+        </div>
+        <div class="p-specs"><span class="skey">STACK</span>Verilog<span class="dot">/</span>DE1-SoC<span class="dot">/</span>Quartus + Platform Designer<span class="dot">/</span>Avalon bus<span class="dot">/</span>C</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/fpga-pid-presentation.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Technical Presentation <span class="arrow">&rarr; PDF</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-category="embedded">
+      <div class="p-index">
+        <span class="p-num">05</span>
+        <span class="p-cat">Embedded Systems</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">Resistive Training Device &mdash; Senior Design</h2>
+        <div class="p-meta">Liberty University &middot; Engineering Capstone &middot; 2024&ndash;2025</div>
+        <p class="p-desc">A multidisciplinary capstone project: a real-time embedded training device for the university swim team that delivers variable resistance with live force and distance feedback.</p>
+        <ul class="p-highlights">
+          <li>Built on FreeRTOS running on an STM32F412, with PWM-controlled motor resistance.</li>
+          <li>Integrated an HX711 load-cell amplifier and tension sensor for real-time force readout in pounds.</li>
+          <li>Used a Hall-effect sensor for drum-rotation distance and velocity tracking, managed by an FSM.</li>
+        </ul>
+
+        <!-- MEDIA GALLERY: image/video files live in the "media/" folder next to index.html.
+             A labelled placeholder shows automatically until a file exists at the given path. -->
+        <div class="p-media">
+          <button class="m-tile" data-cap="Internal assembly — motor, spool, battery, and control electronics">
+            <div class="m-box">
+              <img src="media/capstone-internal-1.jpg" alt="Internal assembly of the resistive training device" loading="lazy"
+                   onerror="this.closest('.m-box').classList.add('is-missing')">
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L4 21"/></svg>
+                <span class="ph-tag">Image</span>
+              </div>
+            </div>
+            <div class="m-cap">Fig. A &mdash; Internal assembly</div>
+          </button>
+          <button class="m-tile" data-cap="Drive and spooling subsystems with controller and battery">
+            <div class="m-box">
+              <img src="media/capstone-internal-2.jpg" alt="Drive and spooling subsystems" loading="lazy"
+                   onerror="this.closest('.m-box').classList.add('is-missing')">
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L4 21"/></svg>
+                <span class="ph-tag">Image</span>
+              </div>
+            </div>
+            <div class="m-cap">Fig. B &mdash; Drive &amp; control systems</div>
+          </button>
+          <button class="m-tile" data-cap="In-water testing of the device at the natatorium">
+            <div class="m-box">
+              <img src="media/capstone-pool-1.jpg" alt="In-water testing at the natatorium" loading="lazy"
+                   onerror="this.closest('.m-box').classList.add('is-missing')">
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L4 21"/></svg>
+                <span class="ph-tag">Image</span>
+              </div>
+            </div>
+            <div class="m-cap">Fig. C &mdash; In-water testing</div>
+          </button>
+          <button class="m-tile" data-cap="Resistance testing with the project team">
+            <div class="m-box">
+              <img src="media/capstone-pool-2.jpg" alt="Resistance testing with the project team" loading="lazy"
+                   onerror="this.closest('.m-box').classList.add('is-missing')">
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L4 21"/></svg>
+                <span class="ph-tag">Image</span>
+              </div>
+            </div>
+            <div class="m-cap">Fig. D &mdash; Testing with the team</div>
+          </button>
+        </div>
+
+        <div class="p-specs"><span class="skey">STACK</span>STM32F412<span class="dot">/</span>FreeRTOS<span class="dot">/</span>PWM<span class="dot">/</span>HX711 load cell<span class="dot">/</span>Hall-effect sensing</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/capstone-final-report.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Capstone Final Report <span class="arrow">&rarr; PDF</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-category="vlsi">
+      <div class="p-index">
+        <span class="p-num">06</span>
+        <span class="p-cat">Digital &amp; VLSI</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">Single-Cycle ARM Processor</h2>
+        <div class="p-meta">Liberty University &middot; Computer Architecture &middot; Fall 2024</div>
+        <p class="p-desc">A single-cycle ARM processor implemented in Verilog, executing core data-processing, memory, and branch instructions, verified against predicted cycle-by-cycle program traces and simulation waveforms.</p>
+        <ul class="p-highlights">
+          <li>Supports the ADD, SUB, AND, ORR, LDR, STR, and B instruction set.</li>
+          <li>Built from a controller &mdash; decoder plus conditional-execution logic &mdash; driving a 32-bit datapath.</li>
+          <li>Extended in a second build to add the EOR and LDRB instructions.</li>
+          <li>Simulated and verified in Quartus and ModelSim against loaded test programs.</li>
+        </ul>
+        <div class="code-viewer" data-cv>
+          <div class="cv-bar">
+            <button class="cv-tab active" type="button">arm.v</button>
+            <button class="cv-tab" type="button">controller.v</button>
+            <button class="cv-tab" type="button">decoder.v</button>
+            <button class="cv-tab" type="button">condlogic.v</button>
+            <button class="cv-tab" type="button">datapath.v</button>
+            <button class="cv-tab" type="button">alu32.v</button>
+            <span class="cv-meta">Verilog</span>
+          </div>
+          <div class="cv-body">
+            <pre class="cv-nums" aria-hidden="true"></pre>
+            <pre class="cv-pre"><code class="cv-code"></code></pre>
+          </div>
+          <script type="text/plain" class="cv-src" data-name="arm.v">
+/*--------------------------------------------------------
+-- ENGC 361 Final Project: Single-Cycle Arm Processor   --
+-- Name: Joyce Berdkan & Garrett Good                   --
+-- ARM module containing the controller and             --
+-- datapath                                             --
+                      
+-- Date:12/04/2024                                      --
+---------------------------------------------*/
+
+module arm(input clk, reset,
+				output [31:0] PC,
+				input [31:0] Instr,
+				output MemWrite,
+				output [31:0] ALUResult, WriteData,
+				input [31:0] ReadData);
+	//declare wires			
+	wire [3:0] ALUFlags;
+	wire RegWrite,
+	ALUSrc, MemtoReg, PCSrc;
+	wire [1:0] RegSrc, ImmSrc, ALUControl;
+	
+	//Instantiate Controller
+	controller c(
+	.clk(clk), 
+	.reset(reset), 
+	.Instr(Instr[31:12]), 
+	.ALUFlags(ALUFlags),
+	.RegSrc(RegSrc), 
+	.RegWrite(RegWrite), 
+	.ImmSrc(ImmSrc),
+	.ALUSrc(ALUSrc), 
+	.ALUControl(ALUControl),
+	.MemWrite(MemWrite), 
+	.MemtoReg(MemtoReg), 
+	.PCSrc(PCSrc)
+	);
+	
+	//Instantiate datapath
+	datapath dp(
+	.clk(clk),
+	.reset(reset),
+	.RegSrc(RegSrc),
+	.RegWrite(RegWrite),
+	.ImmSrc(ImmSrc),
+	.ALUSrc(ALUSrc),
+	.ALUControl(ALUControl), // ADC
+	.MemtoReg(MemtoReg),
+	.PCSrc(PCSrc),
+	.ALUFlags(ALUFlags),
+	.PC(PC),
+	.Instr(Instr),
+	.ALUResult(ALUResult), 
+	.WriteData(WriteData),
+	.ReadData(ReadData) 
+	);
+	
+endmodule
+</script>
+          <script type="text/plain" class="cv-src" data-name="controller.v">
+/*--------------------------------------------------------
+-- ENGC 361 Final Project: Single-Cycle Arm Processor   --
+-- Name: Joyce Berdkan & Garrett Good                   --
+-- Controller stores the current status flags and       --
+-- updates them appropriately.                          --
+                      
+-- Date:12/04/2024                                      --
+---------------------------------------------*/
+module controller(input clk, reset,
+						input [31:12] Instr,
+						input [3:0] ALUFlags,
+						output [1:0] RegSrc,
+						output RegWrite,
+						output [1:0] ImmSrc,
+						output ALUSrc,
+						output [1:0] ALUControl,
+						output MemWrite, MemtoReg,
+						output PCSrc);
+						
+	wire [1:0] FlagW;
+	wire PCS, RegW, MemW;
+	
+	//Instantiate decoder
+	decoder dec(
+	.Op(Instr[27:26]), 
+	.Funct(Instr[25:20]), 
+	.Rd(Instr[15:12]),
+	.FlagW(FlagW), 
+	.PCS(PCS), 
+	.RegW(RegW), 
+	.MemW(MemW),
+	.MemtoReg(MemtoReg), 
+	.ALUSrc(ALUSrc), 
+	.ImmSrc(ImmSrc), 
+	.RegSrc(RegSrc), 
+	.ALUControl(ALUControl)
+	);
+	
+	//Instantiate condlogic
+	condlogic cl(
+	.clk(clk), 
+	.reset(reset), 
+	.Cond(Instr[31:28]), 
+	.ALUFlags(ALUFlags),
+	.FlagW(FlagW), 
+	.PCS(PCS), 
+	.RegW(RegW), 
+	.MemW(MemW),
+	.PCSrc(PCSrc), 
+	.RegWrite(RegWrite), 
+	.MemWrite(MemWrite)
+	);
+	
+endmodule
+</script>
+          <script type="text/plain" class="cv-src" data-name="decoder.v">
+/*--------------------------------------------------
+-- ENGC 361 Lab 5:Control Unit Decoder Design     --
+-- Name: Joyce Berdkan & Garrett Good             --
+-- With three inputs: Op, Funct, and Rd           --
+-- Nine outputs: FlagW, PCS, RegW, MemW, MemtoReg,-- 
+--	ALUSrc, ImmSrc, RegSrc, and ALUControl         --
+
+---------------------------------------------*/
+
+module decoder(input [1:0] Op,
+					input [5:0] Funct,
+					input [3:0] Rd,
+					output reg [1:0] FlagW,
+					output PCS, RegW, MemW,
+					output MemtoReg, ALUSrc,
+					output [1:0] ImmSrc, RegSrc, 
+					output reg [1:0] ALUControl);
+					
+	reg [9:0] controls;
+	wire Branch, ALUOp;
+	// Main Decoder
+	
+	always @(*) begin
+		case(Op)
+			// Data-processing immediate
+			2'b00: if (Funct[5]) controls = 10'b0000101001;
+			// Data-processing register
+			else controls = 10'b0000001001;
+			// LDR
+			2'b01: if (Funct[0]) controls = 10'b0001111000;
+			// STR
+			else controls = 10'b1001110100;
+			// B
+			2'b10: controls = 10'b0110100010;
+			// Unimplemented
+			default: controls = 10'bx;
+		endcase
+	end
+	
+	assign {RegSrc, ImmSrc, ALUSrc, MemtoReg,
+	RegW, MemW, Branch, ALUOp} = controls;
+	
+	// ALU Decoder
+	always @(*) begin
+	if (ALUOp) begin// which DP Instr?
+		case(Funct[4:1])
+			4'b0100: ALUControl = 2'b00; // ADD
+			4'b0010: ALUControl = 2'b01; // SUB
+			4'b0000: ALUControl = 2'b10; // AND
+			4'b1100: ALUControl = 2'b11; // ORR
+			default: ALUControl = 2'bx; // unimplemented
+		endcase
+		
+		// update flags if S bit is set (C & V only for arith)
+		FlagW[1] = Funct[0];
+		FlagW[0] = Funct[0] &
+		(ALUControl == 2'b00 | ALUControl == 2'b01);
+		
+		end 
+	else begin
+		ALUControl = 2'b00; // add for non-DP instructions
+		FlagW = 2'b00; // don't update Flags
+		end
+	end
+	
+	// PC Logic
+	assign PCS = ((Rd == 4'b1111) & RegW) | Branch;
+endmodule
+</script>
+          <script type="text/plain" class="cv-src" data-name="condlogic.v">
+/*--------------------------------------------------------
+-- ENGC 361 Final Project: Single-Cycle Arm Processor   --
+-- Name: Joyce Berdkan & Garrett Good                   --
+-- Conditional logic maintains the status flags and     --
+-- only enables updates to architectural state when     --
+-- the instruction should be conditionally executed.    --
+                      
+-- Date:12/04/2024                                      --
+---------------------------------------------*/
+
+
+module condlogic(input clk, reset,
+						input [3:0] Cond,
+						input [3:0] ALUFlags,
+						input [1:0] FlagW,
+						input PCS, RegW, MemW,
+						output wire PCSrc, RegWrite,
+						MemWrite);
+						
+	wire [1:0] FlagWrite;
+	wire [3:0] Flags;
+	wire CondEx;
+// Instantiate two flag registers for stroing ALU flags
+	flopenr #(2) flagreg1(	//Negative and zero ALU flags
+			.clk(clk), 
+			.reset(reset), 
+			.en(FlagWrite[1]),
+			.d(ALUFlags[3:2]), 
+			.q(Flags[3:2])
+			);
+			
+	flopenr #(2) flagreg0(	//Carry and Overflow ALU Flags
+			.clk(clk), 
+			.reset(reset), 
+			.en(FlagWrite[0]),
+			.d(ALUFlags[1:0]), 
+			.q(Flags[1:0])
+			);
+//	Instantiate conditional checker			
+	condcheck cc(
+			.Cond(Cond), 
+			.Flags(Flags), 
+			.CondEx(CondEx)
+			);
+
+	assign FlagWrite = FlagW & {2{CondEx}};
+	assign RegWrite = RegW & CondEx;
+	assign MemWrite = MemW & CondEx;
+	assign PCSrc = PCS & CondEx;
+
+endmodule
+</script>
+          <script type="text/plain" class="cv-src" data-name="datapath.v">
+/*--------------------------------------------------------
+-- ENGC 361 Lab 4: Datapath                             --
+-- Name: Joyce Berdkan & Garrett Good                   --
+-- Datapath operates on words of data. it contains      --
+-- structures such as memories, registers, ALUs, and    --
+-- multiplexers.												     --
+
+---------------------------------------------*/
+
+module datapath(
+input clk, reset,
+input [1:0] RegSrc,
+input RegWrite,
+input [1:0] ImmSrc,
+input ALUSrc,
+input [1:0] ALUControl, // ADC
+input MemtoReg,
+input PCSrc,
+output [3:0] ALUFlags,
+output [31:0] PC,
+input [31:0] Instr,
+output [31:0] ALUResult,
+output [31:0] WriteData,
+input [31:0] ReadData);
+// wires
+wire [31:0] Result, PCPlus4, PCNext, PCPlus8;
+wire [31:0] SrcA, SrcB, ExtImm;
+wire [3:0] RA1, RA2;
+
+// next PC logic
+// mux for next pc
+mux2 #(32) pcmux(
+	.d0(PCPlus4), 
+	.d1(Result),
+	.s(PCSrc),
+	.y(PCNext)
+);
+	 
+// pc counter	 
+flopr #(32) pcreg(
+	.clk(clk),
+	.reset(reset),
+	.d(PCNext),
+	.q(PC)
+);
+
+// add 4 to pc
+adder #(32) pcadd1(
+	.a(PC),
+	.b(32'h4),
+	.y(PCPlus4)
+);
+
+// register file logic
+// mux for RA1
+mux2 #(32) RA1mux(
+	.d0(Instr[19:16]), 
+	.d1(4'hF),
+	.s(RegSrc[0]),
+	.y(RA1)
+);
+
+// mux for RA2
+mux2 #(32) RA2mux(
+	.d0(Instr[3:0]), 
+	.d1(Instr[15:12]),
+	.s(RegSrc[1]),
+	.y(RA2)
+);
+
+// register file
+regfile rf(
+	.clk(clk),
+	.reset(reset),
+	.we3(RegWrite),
+	.ra1(RA1),
+	.ra2(RA2),
+	.wa3(Instr[15:12]),
+	.wd3(Result),
+	.r15(PCPlus8),
+	.rd1(SrcA),
+	.rd2(WriteData)
+);
+
+// add 4 to pcplus4
+adder #(32) pcadd2(
+	.a(PCPlus4),
+	.b(32'h4),
+	.y(PCPlus8)
+);
+
+// extending immediate
+extend ext(
+	.Instr(Instr[23:0]),
+ 	.ImmSrc(ImmSrc),
+	.ExtImm(ExtImm)
+);
+
+// ALU logic
+// mux for Source b
+mux2 #(32) SrcBmux(
+	.d0(WriteData), 
+	.d1(ExtImm),
+	.s(ALUSrc),
+	.y(SrcB)
+);
+
+// ALU
+alu32 alu(
+	.a(SrcA),
+	.b(SrcB),
+	.ALUControl(ALUControl),
+	.Result(ALUResult),
+	.ALUFlags(ALUFlags)
+);
+
+// mux for result
+mux2 #(32) resmux(
+	.d0(ALUResult), 
+	.d1(ReadData),
+	.s(MemtoReg),
+	.y(Result)
+);
+endmodule
+</script>
+          <script type="text/plain" class="cv-src" data-name="alu32.v">
+/*--------------------------------------------- 
+-- ENGC 361 Lab 2: ALU    
+-- Name: Joyce Berdkan & Garrett Good                          
+-- This 32 bit ALU takes inputs a, b, and 
+-- ALUControl and outputs a Result and any 
+-- ALUFlags. Flags are dertmined by the result
+-- and operation being performed.									
+															
+-- Date: 10/2/2024                           
+---------------------------------------------*/
+
+module alu32(
+input [31:0] a, b,
+input [1:0] ALUControl,
+output reg [31:0] Result,
+output [3:0] ALUFlags);
+
+wire neg, zero, carryout, overflow;
+wire [31:0] condinvb;
+wire [32:0] sum;
+ 
+assign condinvb = ALUControl[0] ? ~b : b;
+assign sum = a + condinvb + ALUControl[0]; 
+
+always @(*) begin
+case(ALUControl[1:0])
+ 2'b00: Result = sum[31:0];
+ 2'b01: Result = sum[31:0];
+ 2'b10: Result = a & b;
+ 2'b11: Result = a | b;
+     endcase
+     end
+
+assign neg = Result[31];
+assign zero = (Result == 32'b0);
+assign carryout = sum[32] & ~ALUControl[1];
+assign overflow = (~(ALUControl[0] ^ a[31] ^ b[31]) & (a[31] ^ sum[31]) & ~(ALUControl[1]));
+assign ALUFlags = {neg, zero, carryout, overflow};
+    endmodule
+</script>
+        </div>
+        <div class="p-specs"><span class="skey">STACK</span>Verilog<span class="dot">/</span>ARM ISA<span class="dot">/</span>Quartus<span class="dot">/</span>ModelSim</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/arm-processor-report.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Project Report <span class="arrow">&rarr; PDF</span>
+          </a>
+          <a class="doc-link" href="code/arm-processor-verilog.zip" download>
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M12 3v13M7 12l5 5 5-5M5 21h14"/></svg>
+            Verilog Source <span class="arrow">&rarr; ZIP</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-category="embedded">
+      <div class="p-index">
+        <span class="p-num">07</span>
+        <span class="p-cat">Embedded Systems</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">RTOS Microcontroller Car</h2>
+        <div class="p-meta">Liberty University &middot; Real-Time Embedded Systems &middot; Spring 2024</div>
+        <p class="p-desc">An RTOS-driven autonomous toy car on the STM32F429, coordinating sensing and motor control across four concurrent tasks with rate-monotonic scheduling analysis.</p>
+        <ul class="p-highlights">
+          <li>Designed four FreeRTOS tasks for sensing, motor control, and system state.</li>
+          <li>Configured ultrasonic distance sensing with proximity-triggered motor actions.</li>
+          <li>Used mutexes, semaphores, and soft timers for synchronization; conducted RM analysis.</li>
+        </ul>
+        <div class="p-specs"><span class="skey">STACK</span>STM32F429<span class="dot">/</span>FreeRTOS<span class="dot">/</span>ultrasonic sensing<span class="dot">/</span>rate-monotonic analysis</div>
+      </div>
+    </article>
+
+    <article class="project" data-category="electronics">
+      <div class="p-index">
+        <span class="p-num">08</span>
+        <span class="p-cat">Electronics &amp; RF</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">Common-Emitter BJT Amplifier PCB</h2>
+        <div class="p-meta">Liberty University &middot; Electronics &middot; Fall 2023</div>
+        <p class="p-desc">A dual-stage common-emitter BJT amplifier designed, simulated, fabricated, and tested as a two-layer printed circuit board &mdash; carried from gain calculations through soldered, measured hardware.</p>
+        <ul class="p-highlights">
+          <li>Hand-calculated dual-stage gain, resistor, and capacitor values to a target total gain.</li>
+          <li>Verified the design in MultiSim and laid out a two-layer board in KiCad with Gerber output.</li>
+          <li>Assembled, soldered, and tested the board, analyzing waveform distortion sources.</li>
+        </ul>
+        <div class="p-specs"><span class="skey">STACK</span>BJT analog design<span class="dot">/</span>MultiSim<span class="dot">/</span>KiCad<span class="dot">/</span>2-layer PCB</div>
+      </div>
+    </article>
+
+    <article class="project" data-category="electronics">
+      <div class="p-index">
+        <span class="p-num">09</span>
+        <span class="p-cat">Electronics &amp; RF</span>
+      </div>
+      <div class="p-body">
+        <h2 class="p-title">Visible Light Communication System</h2>
+        <div class="p-meta">Liberty University &middot; Communications &middot; Spring 2024</div>
+        <p class="p-desc">An analog visible-light communication link that transmits audio over an LED carrier, with a phototransistor receiver and amplifier front-end tuned against noise and interference.</p>
+        <ul class="p-highlights">
+          <li>Drove an LED transmitter from an audio source through a transistor circuit.</li>
+          <li>Built a phototransistor receiver with an LM386 amplifier stage.</li>
+          <li>Mitigated noise and interference through passive component tuning.</li>
+        </ul>
+        <div class="p-media">
+          <figure class="m-tile is-video" data-cap="Monophonic audio transmitted over the visible-light link">
+            <div class="m-box">
+              <video src="media/vlc-monophonic.mp4" controls preload="metadata"
+                     onerror="this.closest('.m-box').classList.add('is-missing')"></video>
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+                <span class="ph-tag">Video</span>
+              </div>
+            </div>
+            <figcaption class="m-cap">Fig. A &mdash; Monophonic transmission</figcaption>
+          </figure>
+          <figure class="m-tile is-video" data-cap="Stereo audio transmitted over the visible-light link">
+            <div class="m-box">
+              <video src="media/vlc-stereo.mp4" controls preload="metadata"
+                     onerror="this.closest('.m-box').classList.add('is-missing')"></video>
+              <div class="m-ph">
+                <svg viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+                <span class="ph-tag">Video</span>
+              </div>
+            </div>
+            <figcaption class="m-cap">Fig. B &mdash; Stereo transmission</figcaption>
+          </figure>
+        </div>
+        <div class="p-specs"><span class="skey">STACK</span>visible light comms<span class="dot">/</span>phototransistor<span class="dot">/</span>LM386<span class="dot">/</span>analog front-end</div>
+        <div class="p-docs">
+          <a class="doc-link" href="papers/vlc-system-report.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Project Report <span class="arrow">&rarr; PDF</span>
+          </a>
+          <a class="doc-link" href="papers/vlc-presentation.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke-width="1.7"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            Presentation <span class="arrow">&rarr; PDF</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <div class="empty" id="empty">No projects in this category.</div>
+  </div>
+</main>
+
+<section class="research">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Appointments</div>
+      <h2 class="sec-title">Research Experience</h2>
+    </div>
+
+    <article class="rx">
+      <div class="rx-date">Sep 2025 &mdash; Oct 2025</div>
+      <div class="rx-body">
+        <h3 class="rx-role">Graduate Research Assistant</h3>
+        <div class="rx-meta">Adaptive Devices &amp; Microsystems (ADAM) Lab<br>George Washington University &middot; Advisor: Dr. Gina Adam</div>
+        <p class="rx-desc">Research within the ADAM Lab on printed-circuit-board integration and packaging for custom chips used in neuromorphic and advanced computing systems.</p>
+        <ul class="p-highlights">
+          <li>Reviewed and critically analyzed technical literature on PCB materials, compositions, and packaging strategies.</li>
+          <li>Assessed PCB organization and schematic frameworks tailored to ADAM Lab chip designs.</li>
+          <li>Documented findings in structured research notes and weekly meetings with the faculty advisor.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="rx">
+      <div class="rx-date">Sep 2023 &mdash; May 2024</div>
+      <div class="rx-body">
+        <h3 class="rx-role">Undergraduate Student Researcher &mdash; Traffic Simulation</h3>
+        <div class="rx-meta">Liberty University &middot; Advisor: Dr. Songsu Son</div>
+        <p class="rx-desc">Research on autonomous-vehicle behavior using the RealTime Technologies driving and traffic simulation platform.</p>
+        <ul class="p-highlights">
+          <li>Developed autonomous-vehicle scenarios on the RealTime Technologies traffic simulator.</li>
+          <li>Programmed custom simulation blocks in C/C++ and JavaScript to extend the research platform.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="rx">
+      <div class="rx-date">Jun 2023 &mdash; May 2024</div>
+      <div class="rx-body">
+        <h3 class="rx-role">Undergraduate Student Researcher &mdash; UAV Technology</h3>
+        <div class="rx-meta">Liberty University &middot; Advisor: Dr. Songsu Son</div>
+        <p class="rx-desc">Research on applying unmanned aerial vehicles to infrastructure and development challenges in developing countries.</p>
+        <ul class="p-highlights">
+          <li>Analyzed thermal-imaging cameras, photogrammetry, GPS, and power systems for UAV deployment.</li>
+          <li>Assessed technology trade-offs for low-resource operating environments.</li>
+        </ul>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="fhead">Open to research collaboration and PhD opportunities.</p>
+    <div class="fcontact">
+      <a href="mailto:joyceberdkan@hotmail.com">joyceberdkan@hotmail.com</a>
+      <a href="https://www.linkedin.com/in/joyce-berdkan/" target="_blank" rel="noopener">linkedin.com/in/joyce-berdkan</a>
+      <span>Arlington, VA</span>
+    </div>
+    <p class="fnote">Joyce Berdkan &mdash; Engineering project index &middot; Last revised 2026</p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">Close &times;</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<script>
+  const buttons=document.querySelectorAll('.fbtn');
+  const projects=document.querySelectorAll('.project');
+  const empty=document.getElementById('empty');
+
+  function applyFilter(filter){
+    let shown=0;
+    projects.forEach((p,i)=>{
+      const match=(filter==='all'||p.dataset.category===filter);
+      if(match){
+        p.classList.remove('hidden');
+        p.style.animation='none';
+        void p.offsetWidth;            /* reflow to restart animation */
+        p.style.animation='rise .55s cubic-bezier(.2,.7,.2,1) forwards';
+        p.style.animationDelay=(shown*0.06)+'s';
+        shown++;
+      }else{
+        p.classList.add('hidden');
+      }
+    });
+    empty.style.display=shown?'none':'block';
+  }
+
+  buttons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.filter);
+    });
+  });
+
+  /* initial staggered load */
+  projects.forEach((p,i)=>{p.style.animationDelay=(i*0.07)+'s';});
+  document.querySelectorAll('.rx').forEach((r,i)=>{r.style.animationDelay=(i*0.09)+'s';});
+
+  /* lightbox - opens loaded images at full size (skips placeholders and video) */
+  const lb=document.getElementById('lightbox');
+  const lbImg=document.getElementById('lbImg');
+  const lbCap=document.getElementById('lbCap');
+  document.querySelectorAll('.m-tile:not(.is-video)').forEach(tile=>{
+    tile.addEventListener('click',()=>{
+      const box=tile.querySelector('.m-box');
+      if(box.classList.contains('is-missing'))return;   /* no file yet */
+      const img=tile.querySelector('img');
+      lbImg.src=img.src;
+      lbImg.alt=img.alt;
+      lbCap.textContent=tile.dataset.cap||'';
+      lb.classList.add('open');
+    });
+  });
+  function closeLb(){lb.classList.remove('open');lbImg.src='';}
+  lb.addEventListener('click',e=>{if(e.target!==lbImg)closeLb();});
+  document.getElementById('lbClose').addEventListener('click',closeLb);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
+
+  /* ---- inline code viewer ---- */
+  (function(){
+    const KW=new Set('module endmodule input output inout wire reg assign always begin end if else case casex casez endcase posedge negedge parameter localparam genvar generate endgenerate for while repeat integer initial default logic signed unsigned function endfunction task endtask'.split(' '));
+    const TOK=/(\/\*[\s\S]*?\*\/)|(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(`[A-Za-z_]\w*)|(\b\d+'[bBoOdDhH][0-9a-fA-FxXzZ_]+)|(\b\d[\d_]*\b)|([A-Za-z_]\w*)|([\s\S])/g;
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    function hl(src){
+      return src.replace(TOK,(m,bc,lc,str,dir,sn,n,w)=>{
+        if(bc!=null)return '<span class="c-com">'+esc(bc)+'</span>';
+        if(lc!=null)return '<span class="c-com">'+esc(lc)+'</span>';
+        if(str!=null)return '<span class="c-str">'+esc(str)+'</span>';
+        if(dir!=null)return '<span class="c-dir">'+esc(dir)+'</span>';
+        if(sn!=null)return '<span class="c-num">'+esc(sn)+'</span>';
+        if(n!=null)return '<span class="c-num">'+esc(n)+'</span>';
+        if(w!=null)return KW.has(w)?'<span class="c-kw">'+w+'</span>':esc(w);
+        return esc(m);
+      });
+    }
+    document.querySelectorAll('[data-cv]').forEach(cv=>{
+      const srcs=[].map.call(cv.querySelectorAll('.cv-src'),s=>s.textContent.replace(/^\n/,'').replace(/\s+$/,''));
+      const tabs=cv.querySelectorAll('.cv-tab');
+      const code=cv.querySelector('.cv-code');
+      const nums=cv.querySelector('.cv-nums');
+      const body=cv.querySelector('.cv-body');
+      function show(i){
+        const t=srcs[i]||'';
+        code.innerHTML=hl(t);
+        const ln=t.split('\n').length;
+        let g='';for(let k=1;k<=ln;k++)g+=k+'\n';
+        nums.textContent=g;
+        tabs.forEach((tb,j)=>tb.classList.toggle('active',j===i));
+        body.scrollTop=0;body.scrollLeft=0;
+      }
+      tabs.forEach((tb,i)=>tb.addEventListener('click',()=>show(i)));
+      show(0);
+    });
+  })();
+</script>
+
+</body>
+</html>
