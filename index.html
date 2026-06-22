@@ -471,22 +471,23 @@
 <main class="projects">
   <div class="wrap" id="list">
 
-    <article class="project featured" data-category="research">
+ <article class="project featured" data-category="research">
       <div class="p-index">
         <span class="p-num">01</span>
         <span class="p-cat">Research</span>
       </div>
       <div class="p-body">
         <span class="flag">Master&#39;s Thesis &middot; In Progress</span>
-        <h2 class="p-title">Compute-in-Memory Ising Machine</h2>
-        <div class="p-meta">George Washington University &middot; MS Thesis &middot; 2026&ndash;2027</div>
-        <p class="p-desc">Developing a compute-in-memory Ising machine &mdash; a hardware accelerator that solves hard combinatorial optimization problems by relaxing a network of coupled spins toward a minimum-energy state, with the computation carried out inside the memory array itself. The thesis spans both the hardware architecture and a simulation framework for evaluating it.</p>
+        <h2 class="p-title">CMOS Oscillator-Based Ising Machine</h2>
+        <div class="p-meta">George Washington University &middot; MS Thesis &middot; SkyWater 130nm &middot; 2026&ndash;2027</div>
+        <p class="p-desc">Bringing to silicon an oscillator-based Ising machine architecture developed in the lab &mdash; a network of coupled CMOS oscillators whose phase dynamics, under sub-harmonic injection locking, settle into a configuration that minimizes the Ising Hamiltonian of an encoded combinatorial-optimization problem. The thesis spans the circuit-level implementation in SkyWater 130nm, a simulation framework for the network dynamics, and a novelty layer extending the original design.</p>
         <ul class="p-highlights">
-          <li>Designing a compute-in-memory architecture that performs Ising-model spin updates within the memory array, avoiding the processor&ndash;memory data-movement bottleneck.</li>
-          <li>Building a simulation framework to model the machine&#39;s dynamics and evaluate convergence on optimization problems.</li>
-          <li>Situates Ising-machine hardware within quantum-inspired computing &mdash; classical accelerators aimed at the optimization problems quantum computers also target.</li>
+          <li>Implementing the circuit-level design &mdash; oscillator topology, coupling network, and phase-readout &mdash; in the SkyWater 130nm open-source PDK.</li>
+          <li>Developing a simulation framework to model the network&#39;s phase dynamics and evaluate its convergence on benchmark combinatorial-optimization problems.</li>
+          <li>Designing a novelty layer that extends the original architecture, in collaboration with a senior PhD student in the lab.</li>
+          <li>Work on track to produce a co-authored publication.</li>
         </ul>
-        <div class="p-specs"><span class="skey">TOPICS</span>compute-in-memory<span class="dot">/</span>Ising model<span class="dot">/</span>combinatorial optimization<span class="dot">/</span>hardware simulation</div>
+        <div class="p-specs"><span class="skey">TOPICS</span>oscillator Ising machine<span class="dot">/</span>sub-harmonic injection locking<span class="dot">/</span>SkyWater 130nm<span class="dot">/</span>analog mixed-signal<span class="dot">/</span>combinatorial optimization</div>
       </div>
     </article>
 
